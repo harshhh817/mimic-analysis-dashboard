@@ -6,7 +6,8 @@ venv/
 .env
 
 # Data
-data/
+data/*
+!data/processed_admissions.csv
 sql_output/
 mimic-iii-clinical-database-demo-1.4/
 *.csv
