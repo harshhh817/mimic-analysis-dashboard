@@ -19,18 +19,26 @@ st.set_page_config(
 # -----------------------------------------------------------------------------
 @st.cache_data
 def load_data():
-    current_dir = os.path.dirname(os.path.abspath(__file__))
-    processed_path = os.path.join(current_dir, '../data/processed_admissions.csv')
-    if not os.path.exists(processed_path): return None
-    df = pd.read_csv(processed_path)
-    df['admittime'] = pd.to_datetime(df['admittime'], errors='coerce')
-    df['Outcome'] = df['hospital_expire_flag'].map({0: 'Survivor', 1: 'Deceased'})
-    return df
+    try:
+        current_dir = os.path.dirname(os.path.abspath(__file__))
+        processed_path = os.path.join(current_dir, '../data/processed_admissions.csv')
+        
+        if not os.path.exists(processed_path): 
+            return None, f"File not found at: {processed_path}"
+            
+        df = pd.read_csv(processed_path)
+        df['admittime'] = pd.to_datetime(df['admittime'], errors='coerce')
+        df['Outcome'] = df['hospital_expire_flag'].map({0: 'Survivor', 1: 'Deceased'})
+        return df, None
+    except Exception as e:
+        import traceback
+        return None, traceback.format_exc()
 
-df = load_data()
+df, err_msg = load_data()
 if df is None:
-    st.error("Data processing required. Please run processing script.")
+    st.error(f"Error loading data: {err_msg}")
     st.stop()
+
 
 # -----------------------------------------------------------------------------
 # 3. SIDEBAR
