@@ -1,0 +1,15 @@
+# Python
+__pycache__/
+*.py[cod]
+*.so
+venv/
+.env
+
+# Data
+data/
+sql_output/
+mimic-iii-clinical-database-demo-1.4/
+*.csv
+
+# Streamlit
+.streamlit/
